@@ -92,7 +92,7 @@ const createToken = (userId)=>{
             user:{
                 id:user._id,
                 name:user.name,
-                emai:user.email;
+                emai:user.email,
             }
         })
     } catch (error) {
