@@ -128,7 +128,7 @@ const createToken = (userId)=>{
 
  // to update user profile
  export async function updsteProfile(req,res){
-    const {name.email} = req.body;
+    const {name,email} = req.body;
     if(!email || !name || !validator.isEmail(email)){
         return res.status(400).json({
             success:false,
