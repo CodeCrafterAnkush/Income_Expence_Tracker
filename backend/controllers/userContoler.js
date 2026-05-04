@@ -1,7 +1,8 @@
 import { response } from 'express';
-import '../models/userModel.js';
+import User from '../models/userModel.js';
 import validator from 'validator';
 import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 
 const JWT_SECRET = 'my_secret_key';
 const TOKEN_EXPIRE = '24h';
@@ -13,6 +14,7 @@ const createToken = (userId)=>{
 // Register User
  export async function registerUser(req,res) {
     const {name,email,password} = req.body;
+
     if(!name || !email || !password ){
         return res.status(400).json({
             success:false,
@@ -32,7 +34,7 @@ const createToken = (userId)=>{
         });
     }
     try {
-        if(await User.findOne({emai})){
+        if(await User.findOne({email})){
             return res.status(400).json({
                 success:false,
                 message:"User already present."
@@ -50,6 +52,7 @@ const createToken = (userId)=>{
         });
     }
     catch (error) {
+        console.error("Error in user registration:", error);
         return res.status(500).json({
             success:false,
             message:"Server Error."
@@ -127,7 +130,7 @@ const createToken = (userId)=>{
  }
 
  // to update user profile
- export async function updsteProfile(req,res){
+ export async function updateProfile(req,res){
     const {name,email} = req.body;
     if(!email || !name || !validator.isEmail(email)){
         return res.status(400).json({
@@ -160,3 +163,42 @@ const createToken = (userId)=>{
         });
     }
  }
+
+// to update user password
+export async function updatePassword(req,res){
+    const {currentPassword,newPassword} = req.body;
+    if(!currentPassword || !newPassword || newPassword.length < 8){
+        return res.status(400).json({
+            success:false,
+            message:"Password is Invalid or too short."
+        });
+    }
+    try {
+        const user = await User.findById(req.user.id).select("password");
+        if(!user){
+            return res.status(400).json({
+                success:false,
+                message:"User not found."
+            })
+        }
+        const match = await bcrypt.compare(currentPassword,user.password);
+        if(!match){
+            return res.status(401).json({
+                success:false,
+                message:"Current password is incorrect."
+            })
+        }
+
+        user.password = await bcrypt.hash(newPassword,10);
+        await user.save();
+        res.json({
+            success:true,
+            message:"Password updated successfully."
+        })
+    } catch (error) {
+        return res.status(500).json({
+            success:false,
+            message:"Server Error."
+        });
+    }
+    }
