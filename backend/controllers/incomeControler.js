@@ -1,6 +1,6 @@
 import incomeModel from "../models/incomeModel.js";
 import incomeModel from "../models/incomeModel.js";
-
+import XLSX from "xlsx";
 
 
 export async function addIncome(req,res) {
@@ -102,5 +102,23 @@ export async function deleteIncome(req,res) {
             success:false,
             message:"Server Error."
         });
+    }
+}
+
+//to download the data in exxcel sheet
+export async function downloadIncomeExcel(req,res) {
+    const userId = req.user._id;
+    try {
+        const income = await incomeModel.find({userId}).sort({date:-1});
+        const plainData = income.map((inc) => ({
+            Description : inc.description,
+            Amount : inc.amount,
+            Category : inc.category,
+            Date : new Date(inc.date).toLocaleDateString(),
+        }));
+
+        const worksheet = XLSX;
+    } catch (error) {
+        
     }
 }
