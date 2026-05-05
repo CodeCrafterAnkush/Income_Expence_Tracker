@@ -10,7 +10,7 @@ userRouter.post('/login',loginUser);
 
 // protected route
 userRouter.get('/me', authMiddleware, getCurrentUser);
-userRouter.get('/profile', authMiddleware, updateProfile);
-userRouter.get('/password', authMiddleware, updatePassword);
+userRouter.put('/profile', authMiddleware, updateProfile);
+userRouter.put('/password', authMiddleware, updatePassword);
 
 export default userRouter;

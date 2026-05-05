@@ -2,7 +2,7 @@ import User from '../models/userModel.js';
 import jwt from 'jsonwebtoken';
 
 const JWT_SECRET = 'my_secret_key';
-export default function authMiddleware(req,res,next){
+export default async function authMiddleware(req,res,next){
     // grabe the token
     const authHeader = req.headers.authorization;
     if(!authHeader || !authHeader.startsWith("Bearer ")){
@@ -15,14 +15,14 @@ export default function authMiddleware(req,res,next){
     // verify the token
     try {
         const payload = jwt.verify(token,JWT_SECRET);
-        const user = User.findById(payload.id).select("-password");
+        const user = await User.findById(payload.id).select("-password");
         if(!user){
             return res.status(401).json({
                 success:false,
                 message:"User not found."
             });
         }
-        res.user = user;
+        req.user = user;
         next(); 
     } catch (error) {
         console.error("JWT verufication failed:", error);

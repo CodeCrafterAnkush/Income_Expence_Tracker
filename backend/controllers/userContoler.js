@@ -7,10 +7,17 @@ import jwt from 'jsonwebtoken';
 const JWT_SECRET = 'my_secret_key';
 const TOKEN_EXPIRE = '24h';
 
-const createToken = (userId)=>{
-    jwt.sign({id: userId},JWT_SECRET,{expiresIn:TOKEN_EXPIRE});
-}
+// const createToken = (userId)=>{
+//     jwt.sign({id: userId},JWT_SECRET,{expiresIn:TOKEN_EXPIRE});
+// }
 
+const createToken = (userId) => {
+    return jwt.sign(
+        { id: userId },
+        JWT_SECRET,
+        { expiresIn: TOKEN_EXPIRE }
+    );
+};
 // Register User
  export async function registerUser(req,res) {
     const {name,email,password} = req.body;
@@ -65,7 +72,7 @@ const createToken = (userId)=>{
  export async function loginUser(req,res) {
     const {email,password}= req.body;
     if(!email || !password){
-        return res.status(400).jeson({
+        return res.status(400).json({
             success:false,
             message:"Both fields are required."
 
@@ -117,11 +124,13 @@ const createToken = (userId)=>{
                 success:false,
                 message:"User not found"
         })}
-        res.jeson({
-            success:true,user 
+        res.json({
+            success:true,
+            user 
         })
         
     } catch (error) {
+        console.error("Error in fetching user:", error);
         return res.status(500).json({
             success:false,
             message:"Server Error."
@@ -152,7 +161,7 @@ const createToken = (userId)=>{
             {new:true, runValidators:true,select:"name email"}
         );
 
-        res.jeson({
+        res.json({
             success:true,
             user
         })
