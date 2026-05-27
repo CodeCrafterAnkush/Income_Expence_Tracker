@@ -1,4 +1,4 @@
-import incomeModel from "../models/incomeModel.js";
+import incomeModel from "../models/income.model.js";
 import XLSX from "xlsx";
 import getDateRange from "../utils/dataFilter.js";
 
