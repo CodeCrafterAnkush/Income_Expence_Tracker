@@ -1,4 +1,4 @@
-import incomeModel from "../models/income.model.js";
+import inconesModel from "../models/income.model.js";
 import XLSX from "xlsx";
 import getDateRange from "../utils/dataFilter.js";
 
@@ -15,20 +15,20 @@ export async function addIncome(req, res) {
       });
     }
 
-    const newIncome = new incomeModel({
+    const newincones = new inconesModel({
       userId,
       description,
       amount,
       category,
       date: new Date(date),
     });
-    await newIncome.save();
+    await newincones.save();
     res.json({
       success: true,
-      message: "Income added successfully.",
+      message: "incones added successfully.",
     });
   } catch (error) {
-    console.error("Error in adding income:", error);
+    console.error("Error in adding incones:", error);
     return res.status(500).json({
       success: false,
       message: "Server Error.",
@@ -36,16 +36,16 @@ export async function addIncome(req, res) {
   }
 }
 
-// get Income (all)
+// get incones (all)
 
 export async function getAllIncomes(req, res) {
   const userId = req.user._id;
 
   try {
-    const income = await incomeModel.find({ userId }).sort({ date: -1 });
-    res.json(income);
+    const incones = await inconesModel.find({ userId }).sort({ date: -1 });
+    res.json(incones);
   } catch (error) {
-    console.error("Error in fetching incomes:", error);
+    console.error("Error in fetching inconess:", error);
     return res.status(500).json({
       success: false,
       message: "Server Error.",
@@ -58,7 +58,7 @@ export async function updateIncome(req, res) {
   const userId = req.user._id;
   const { description, amount } = req.body;
   try {
-    const updatedIncome = await incomeModel.findOneAndUpdate(
+    const updatedincones = await inconesModel.findOneAndUpdate(
       {
         _id: id,
         userId,
@@ -66,19 +66,19 @@ export async function updateIncome(req, res) {
       { description, amount },
       { new: true },
     );
-    if (!updatedIncome) {
+    if (!updatedincones) {
       return res.status(404).json({
         success: false,
-        message: "Income not found.",
+        message: "incones not found.",
       });
     }
     res.json({
       success: true,
-      message: "Income updated successfully.",
-      data: updatedIncome,
+      message: "incones updated successfully.",
+      data: updatedincones,
     });
   } catch (error) {
-    console.error("Error in updating income:", error);
+    console.error("Error in updating incones:", error);
     return res.status(500).json({
       success: false,
       message: "Server Error.",
@@ -86,22 +86,22 @@ export async function updateIncome(req, res) {
   }
 }
 
-// delete income
+// delete incones
 export async function deleteIncome(req, res) {
   try {
-    const income = await incomeModel.findOneAndDelete({ _id: req.params.id });
-    if (!income) {
+    const incones = await inconesModel.findOneAndDelete({ _id: req.params.id });
+    if (!incones) {
       return res.status(404).json({
         success: false,
-        message: "Income not found.",
+        message: "incones not found.",
       });
     }
     return res.json({
       success: true,
-      message: "Income deleted successfully.",
+      message: "incones deleted successfully.",
     });
   } catch (error) {
-    console.error("Error in deleting income:", error);
+    console.error("Error in deleting incones:", error);
     return res.status(500).json({
       success: false,
       message: "Server Error.",
@@ -113,8 +113,8 @@ export async function deleteIncome(req, res) {
 export async function downloadIncomeExcel(req, res) {
   const userId = req.user._id;
   try {
-    const income = await incomeModel.find({ userId }).sort({ date: -1 });
-    const plainData = income.map((inc) => ({
+    const incones = await inconesModel.find({ userId }).sort({ date: -1 });
+    const plainData = incones.map((inc) => ({
       Description: inc.description,
       Amount: inc.amount,
       Category: inc.category,
@@ -123,11 +123,11 @@ export async function downloadIncomeExcel(req, res) {
 
     const worksheet = XLSX.utils.json_to_sheet(plainData);
     const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "incomeModel");
-    XLSX.writeFile(workbook, "income_details.xlsx");
-    res.download("income_details.xlsx");
+    XLSX.utils.book_append_sheet(workbook, worksheet, "inconesModel");
+    XLSX.writeFile(workbook, "incones_details.xlsx");
+    res.download("incones_details.xlsx");
   } catch (error) {
-    console.error("Error in downloading income data:", error);
+    console.error("Error in downloading incones data:", error);
     return res.status(500).json({
       success: false,
       message: "Server Error.",
@@ -135,38 +135,38 @@ export async function downloadIncomeExcel(req, res) {
   }
 }
 
-// income overview
+// incones overview
 export async function getIncomeOverview(req, res) {
   try {
     const userId = req.user._id;
     const { range = "monthly" } = req.query;
     const { start, end } = getDateRange(range);
 
-    const income = await incomeModel
+    const incones = await inconesModel
       .find({
         userId,
         date: { $gte: start, $lte: end },
       })
       .sort({ date: -1 });
 
-    const totalIncome = incomes.reduce((acc, cur) => acc + cur.amount, 0);
-    const averageIncome = incomes.length > 0 ? totalIncome / incomes.length : 0;
-    const numberOfTransactions = incomes.length;
+    const totalincones = inconess.reduce((acc, cur) => acc + cur.amount, 0);
+    const averageincones = inconess.length > 0 ? totalincones / inconess.length : 0;
+    const numberOfTransactions = inconess.length;
 
-    const recentTransactions = incomes.slice(0, 9);
+    const recentTransactions = inconess.slice(0, 9);
 
     res.json({
       success: true,
       data: {
-        totalIncome,
-        averageIncome,
+        totalincones,
+        averageincones,
         numberOfTransactions,
         recentTransactions,
         range,
       },
     });
   } catch (error) {
-    console.error("Error in fetching income overview:", error);
+    console.error("Error in fetching incones overview:", error);
     return res.status(500).json({
       success: false,
       message: "Server Error.",
