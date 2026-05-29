@@ -3,7 +3,18 @@ import { Outlet } from "react-router-dom";
 import { styles } from "../assets/dummyStyles";
 import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
-import { Activity, ArrowUp, Car, CreditCard, Gift, Home, PiggyBank, ShoppingCart, Utensils, Zap } from "lucide-react";
+import {
+  Activity,
+  ArrowUp,
+  Car,
+  CreditCard,
+  Gift,
+  Home,
+  PiggyBank,
+  ShoppingCart,
+  Utensils,
+  Zap,
+} from "lucide-react";
 import axios from "axios";
 
 const API_BASE = "http://localhost:4000/api";
@@ -35,7 +46,7 @@ const filterTransactions = (transactions, frame) => {
     }
     case "monthly":
       return transactions.filter(
-        (t) => new Date(t.date).getMonth() === now.getMonth()
+        (t) => new Date(t.date).getMonth() === now.getMonth(),
       );
     default:
       return transactions;
@@ -52,9 +63,6 @@ const safeArrayFromResponse = (res) => {
   return [];
 };
 
-
-
-
 const Layout = ({ onLogout, user }) => {
   const [transactions, setTransactions] = useState([]);
   const [timeFrame, setTimeFrame] = useState("monthly");
@@ -63,7 +71,7 @@ const Layout = ({ onLogout, user }) => {
   const [lastUpdated, setLastUpdated] = useState(new Date());
   const [sidebarCollapsed, serSidebarCollapsed] = React.useState(false);
 
-  // to fetch the transaction from serverside 
+  // to fetch the transaction from serverside
 
   const fetchTransactions = async () => {
     try {
@@ -102,7 +110,7 @@ const Layout = ({ onLogout, user }) => {
     } catch (err) {
       console.error(
         "Failed to fetch transactions",
-        err?.response || err.message || err
+        err?.response || err.message || err,
       );
     } finally {
       setLoading(false);
@@ -121,7 +129,7 @@ const Layout = ({ onLogout, user }) => {
     } catch (err) {
       console.error(
         "Failed to add transaction",
-        err?.response || err.message || err
+        err?.response || err.message || err,
       );
       throw err;
     }
@@ -141,7 +149,7 @@ const Layout = ({ onLogout, user }) => {
     } catch (err) {
       console.error(
         "Failed to edit transaction",
-        err?.response || err.message || err
+        err?.response || err.message || err,
       );
       throw err;
     }
@@ -158,7 +166,7 @@ const Layout = ({ onLogout, user }) => {
     } catch (err) {
       console.error(
         "Failed to delete transaction",
-        err?.response || err.message || err
+        err?.response || err.message || err,
       );
       throw err;
     }
@@ -170,9 +178,8 @@ const Layout = ({ onLogout, user }) => {
 
   const filteredTransactions = useMemo(
     () => filterTransactions(transactions, timeFrame),
-    [transactions, timeFrame]
-  );// filter with the time frame
-
+    [transactions, timeFrame],
+  ); // filter with the time frame
 
   const stats = useMemo(() => {
     const now = new Date();
@@ -180,7 +187,7 @@ const Layout = ({ onLogout, user }) => {
     thirtyDaysAgo.setDate(now.getDate() - 30);
 
     const last30DaysTransactions = transactions.filter(
-      (t) => new Date(t.date) >= thirtyDaysAgo
+      (t) => new Date(t.date) >= thirtyDaysAgo,
     );
 
     const last30DaysIncome = last30DaysTransactions
@@ -202,7 +209,7 @@ const Layout = ({ onLogout, user }) => {
     const savingsRate =
       last30DaysIncome > 0
         ? Math.round(
-            ((last30DaysIncome - last30DaysExpenses) / last30DaysIncome) * 100
+            ((last30DaysIncome - last30DaysExpenses) / last30DaysIncome) * 100,
           )
         : 0;
 
@@ -223,7 +230,7 @@ const Layout = ({ onLogout, user }) => {
         ? Math.round(
             ((last30DaysExpenses - previous30DaysExpenses) /
               previous30DaysExpenses) *
-              100
+              100,
           )
         : 0;
 
@@ -246,9 +253,9 @@ const Layout = ({ onLogout, user }) => {
       timeFrame === "daily"
         ? "Today"
         : timeFrame === "weekly"
-        ? "This Week"
-        : "This Month",
-    [timeFrame]
+          ? "This Week"
+          : "This Month",
+    [timeFrame],
   );
 
   const outletContext = {
@@ -273,18 +280,17 @@ const Layout = ({ onLogout, user }) => {
           .reduce((acc, t) => {
             acc[t.category] = (acc[t.category] || 0) + Number(t.amount);
             return acc;
-          }, {})
+          }, {}),
       )
         .sort((a, b) => b[1] - a[1])
         .slice(0, 5),
-    [transactions]
+    [transactions],
   );
 
   const displayedTransactions = showAllTransactions
     ? transactions
     : transactions.slice(0, 4);
-  
-  
+
   return (
     <div className={styles.layout.root}>
       <Navbar user={user} onLogout={onLogout} />
@@ -307,8 +313,11 @@ const Layout = ({ onLogout, user }) => {
             <div>
               <p className={styles.statCards.cardTitle}>Total BAlance</p>
               <p className={styles.statCards.cardValue}>
-  ${stats.allTimeSavings.toLocaleString("en-US", { minimumFractionDigits: 2 })}
-</p>
+                $
+                {stats.allTimeSavings.toLocaleString("en-US", {
+                  minimumFractionDigits: 2,
+                })}
+              </p>
             </div>
           </div>
         </div>
