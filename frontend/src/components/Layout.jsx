@@ -8,11 +8,17 @@ import {
   ArrowDown,
   ArrowUp,
   Car,
+  ChevronDown,
+  ChevronUp,
+  Clock,
   CreditCard,
   DollarSign,
   Gift,
   Home,
+  Info,
   PiggyBank,
+  RefreshCcw,
+  RefreshCw,
   ShoppingCart,
   TrendingUp,
   Utensils,
@@ -310,125 +316,314 @@ const Layout = ({ onLogout, user }) => {
           </div>
         </div>
 
-<div className={styles.statCards.grid}>
-        <div className={styles.statCards.card}>
-          <div className={styles.statCards.cardHeader}>
-            <div>
-              <p className={styles.statCards.cardTitle}>Total BAlance</p>
-              <p className={styles.statCards.cardValue}>
-                $
-                {stats.allTimeSavings.toLocaleString("en-US", {
-                  minimumFractionDigits: 2,
-                })}
-              </p>
-            </div>
-            <div className={styles.statCards.iconContainer("teal")}>
-            <DollarSign className={styles.statCards.icon("teal")} />
-            </div>
-          </div>
-          <p classNAme={styles.statCards.cardFooter}>
-            <span className="text-teal-600 font-medium">
-              +${stats.last30DaysSavings.toLocaleString()}
-            </span>{" "}
-            this month
-
-          </p>
-        </div>
-        
-        {/* {this id for the incom} */}
-        <div className={styles.statCards.card}>
-          <div className={styles.statCards.cardHeader}>
-            <div>
-              <p className={styles.statCards.cardTitle}>Monthly Income</p>
-              <p className={styles.statCards.cardValue}>
-                $
-                {stats.last30DaysIncome.toLocaleString("en-US", {
-                  minimumFractionDigits: 2,
-                })}
-              </p>
-            </div>
-            <div className={styles.statCards.iconContainer("green")}>
-            <ArrowUp className={styles.statCards.icon("green")} />
-            </div>
-          </div>
-          <p classNAme={styles.statCards.cardFooter}>
-            <span className="text-green-600 font-medium">
-              +12.5%
-            </span>{" "}
-            from last month
-
-          </p>
-        </div>
-
-        {/* this is for expence */}
-        <div className={styles.statCards.card}>
-          <div className={styles.statCards.cardHeader}>
-            <div>
-              <p className={styles.statCards.cardTitle}>Monthly Expence</p>
-              <p className={styles.statCards.cardValue}>
-                $
-                {stats.last30DaysExpenses.toLocaleString("en-US", {
-                  minimumFractionDigits: 2,
-                })}
-              </p>
-            </div>
-            <div className={styles.statCards.iconContainer("orange")}>
-            <ArrowDown className={styles.statCards.icon("orange")} />
-            </div>
-          </div>
-          <p classNAme={styles.statCards.cardFooter}>
-            <span className={`${styles.colors.expenseChange(
-              stats.expenseChange,
-            )} font-medium`}>
-              {stats.expenseChange > 0?"+":""}{stats.expenseChange}%
-            </span>{" "}
-            from last month
-          </p>
-        </div>
-
-        <div className={styles.statCards.card}>
-          <div className={styles.statCards.cardHeader}>
-            <div>
-              <p className={styles.statCards.cardTitle}>Saving Rate</p>
-              <p className={styles.statCards.cardValue}>
-                {stats.savingsRate}%
-              </p>
-            </div>
-            <div className={styles.statCards.iconContainer("blue")}>
-            <PiggyBank className={styles.statCards.icon("blue")} />
-            </div>
-          </div>
-          <p classNAme={styles.statCards.cardFooter}>
-            {getSavingsRating(stats.savingsRate)}
-          </p>
-        </div>
-
-        <div className={styles.grid.main}>
-          <div className={styles.grid.leftColumn}>
-            <div className={styles.cards.base}>
-              <div className={styles.cards.header}>
-                <h3 className={styles.cards.title}>
-                  <TrendingUp className="w-6 h-6 text-teal-500" />
-                  Financial Overview
-
-                  <span className="text-sm text-gray-500font-normal">
-                    {{timeFrameLabel}}
-                  </span>
-                </h3>
+        <div className={styles.statCards.grid}>
+          <div className={styles.statCards.card}>
+            <div className={styles.statCards.cardHeader}>
+              <div>
+                <p className={styles.statCards.cardTitle}>Total BAlance</p>
+                <p className={styles.statCards.cardValue}>
+                  $
+                  {stats.allTimeSavings.toLocaleString("en-US", {
+                    minimumFractionDigits: 2,
+                  })}
+                </p>
               </div>
-              <Outlet context={outletContext} />
+              <div className={styles.statCards.iconContainer("teal")}>
+                <DollarSign className={styles.statCards.icon("teal")} />
+              </div>
+            </div>
+            <p className={styles.statCards.cardFooter}>
+              <span className="text-teal-600 font-medium">
+                +${stats.last30DaysSavings.toLocaleString()}
+              </span>{" "}
+              this month
+            </p>
+          </div>
+
+          {/* {this id for the incom} */}
+          <div className={styles.statCards.card}>
+            <div className={styles.statCards.cardHeader}>
+              <div>
+                <p className={styles.statCards.cardTitle}>Monthly Income</p>
+                <p className={styles.statCards.cardValue}>
+                  $
+                  {stats.last30DaysIncome.toLocaleString("en-US", {
+                    minimumFractionDigits: 2,
+                  })}
+                </p>
+              </div>
+              <div className={styles.statCards.iconContainer("green")}>
+                <ArrowUp className={styles.statCards.icon("green")} />
+              </div>
+            </div>
+            <p className={styles.statCards.cardFooter}>
+              <span className="text-green-600 font-medium">+12.5%</span> from
+              last month
+            </p>
+          </div>
+
+          {/* this is for expence */}
+          <div className={styles.statCards.card}>
+            <div className={styles.statCards.cardHeader}>
+              <div>
+                <p className={styles.statCards.cardTitle}>Monthly Expence</p>
+                <p className={styles.statCards.cardValue}>
+                  $
+                  {stats.last30DaysExpenses.toLocaleString("en-US", {
+                    minimumFractionDigits: 2,
+                  })}
+                </p>
+              </div>
+              <div className={styles.statCards.iconContainer("orange")}>
+                <ArrowDown className={styles.statCards.icon("orange")} />
+              </div>
+            </div>
+            <p className={styles.statCards.cardFooter}>
+              <span
+                className={`${styles.colors.expenseChange(
+                  stats.expenseChange,
+                )} font-medium`}
+              >
+                {stats.expenseChange > 0 ? "+" : ""}
+                {stats.expenseChange}%
+              </span>{" "}
+              from last month
+            </p>
+          </div>
+
+          <div className={styles.statCards.card}>
+            <div className={styles.statCards.cardHeader}>
+              <div>
+                <p className={styles.statCards.cardTitle}>Saving Rate</p>
+                <p className={styles.statCards.cardValue}>
+                  {stats.savingsRate}%
+                </p>
+              </div>
+              <div className={styles.statCards.iconContainer("blue")}>
+                <PiggyBank className={styles.statCards.icon("blue")} />
+              </div>
+            </div>
+            <p className={styles.statCards.cardFooter}>
+              {getSavingsRating(stats.savingsRate)}
+            </p>
+          </div>
+          <div className={styles.grid.main}>
+            <div className={styles.grid.leftColumn}>
+              <div className={styles.cards.base}>
+                <div className={styles.cards.header}>
+                  <h3 className={styles.cards.title}>
+                    <TrendingUp className="w-6 h-6 text-teal-500" />
+                    Financial Overview
+                    <span className="text-sm text-gray-500font-normal">
+                      ({timeFrameLabel})
+                    </span>
+                  </h3>
+                </div>
+                <Outlet context={outletContext} />
+              </div>
             </div>
           </div>
 
-
+          {/*right side */}
+          <div className={styles.grid.rightColumn}>
+            <div className={styles.cards.base}>
+              <div className={styles.transactions.cardHeader}>
+                <h3 className={styles.transactions.cardTitle}>
+                  <Clock className="w-6 h-6 text-purple-500" />
+                  Recent Transaction
+                </h3>
+                <button
+                  onClick={fetchTransactions}
+                  disabled={loading}
+                  className={styles.transactions.refreshButton}
+                >
+                  <RefreshCw
+                    className={styles.transactions.refreshIcon(loading)}
+                  />
+                </button>
+              </div>
+              <div className={styles.transactions.dataStackingInfo}>
+                <Info className={styles.transactions.dataStackingIcon} />
+                <span> Transactions are stack by dates (newest first)</span>
+              </div>
+              <div className={styles.transactions.listContainer}>
+                {displayedTransactions.map((transaction) => {
+                  const { id, type, category, description, date, amount } =
+                    transactions;
+                  return (
+                    <div
+                      key={id}
+                      className={styles.transactions.transactionItem}
+                    >
+                      <div className="flex items-center gap-1 md:gap-4 lg:gap-3">
+                        <div
+                          className={`p-2 rounded-lg ${styles.colors.transaction.bg(type)}`}
+                        >
+                          {CATEGORY_ICONS || (
+                            <DollarSign className={styles.transactions.icon} />
+                          )}
+                        </div>
+                        <div className={styles.transactions.details}>
+                          <p className={styles.transactions.description}>
+                            {description}
+                          </p>
+                          <p className={styles.transactions.meta}>
+                            {new Date(date).toLocaleDateString()}
+                            <span className="ml-2 capitalize">{category}</span>
+                          </p>
+                        </div>
+                      </div>
+                      <span className={styles.colors.transaction.text(type)}>
+                        {type === "income" ? "+" : "-"}${Number(amount)}
+                      </span>
+                    </div>
+                  );
+                })}
+                {transactions.length === 0 ? (
+                  <div className={styles.transactions.emptyState}>
+                    <div className={styles.transactions.emptyIconContainer}>
+                      <Clock className={styles.transactions.emptyIcon} />
+                    </div>
+                    <p className={styles.transactions.emptyText}>
+                      No recent transactions
+                    </p>
+                  </div>
+                ) : (
+                  <div className={styles.transactions.viewAllContainer}>
+                    <button
+                      onClick={() => {
+                        setShowAllTransactions(!setShowAllTransactions);
+                      }}
+                      className={styles.transactions.viewAllButton}
+                    >
+                      {showAllTransactions ? (
+                        <>
+                        <ChevronUp className="w-5 h-5 "/>
+                        Show less
+                        </>
+                      ) : (
+                      <>
+                      < ChevronDown className="w-5 h-5 "/> 
+                      View All Transactions({transactions.length})
+                      </>)}
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
         </div>
-        
-        {/*right side */}
-      </div>
-        
-      </div>
+         
+         {/* under div */}
+         <div>
+          <div className={styles.grid.main}>
+            <div className={styles.grid.leftColumn}>
+              <div className={styles.cards.base}>
+                <div className={styles.cards.header}>
+                  <h3 className={styles.cards.title}>
+                    <TrendingUp className="w-6 h-6 text-teal-500" />
+                    Financial Overview
+                    <span className="text-sm text-gray-500font-normal">
+                      ({timeFrameLabel})
+                    </span>
+                  </h3>
+                </div>
+                <Outlet context={outletContext} />
+              </div>
+            </div>
+          </div>
 
-      
+          {/*right side */}
+          <div className={styles.grid.rightColumn}>
+            <div className={styles.cards.base}>
+              <div className={styles.transactions.cardHeader}>
+                <h3 className={styles.transactions.cardTitle}>
+                  <Clock className="w-6 h-6 text-purple-500" />
+                  Recent Transaction
+                </h3>
+                <button
+                  onClick={fetchTransactions}
+                  disabled={loading}
+                  className={styles.transactions.refreshButton}
+                >
+                  <RefreshCw
+                    className={styles.transactions.refreshIcon(loading)}
+                  />
+                </button>
+              </div>
+              <div className={styles.transactions.dataStackingInfo}>
+                <Info className={styles.transactions.dataStackingIcon} />
+                <span> Transactions are stack by dates (newest first)</span>
+              </div>
+              <div className={styles.transactions.listContainer}>
+                {displayedTransactions.map((transaction) => {
+                  const { id, type, category, description, date, amount } =
+                    transactions;
+                  return (
+                    <div
+                      key={id}
+                      className={styles.transactions.transactionItem}
+                    >
+                      <div className="flex items-center gap-1 md:gap-4 lg:gap-3">
+                        <div
+                          className={`p-2 rounded-lg ${styles.colors.transaction.bg(type)}`}
+                        >
+                          {CATEGORY_ICONS || (
+                            <DollarSign className={styles.transactions.icon} />
+                          )}
+                        </div>
+                        <div className={styles.transactions.details}>
+                          <p className={styles.transactions.description}>
+                            {description}
+                          </p>
+                          <p className={styles.transactions.meta}>
+                            {new Date(date).toLocaleDateString()}
+                            <span className="ml-2 capitalize">{category}</span>
+                          </p>
+                        </div>
+                      </div>
+                      <span className={styles.colors.transaction.text(type)}>
+                        {type === "income" ? "+" : "-"}${Number(amount)}
+                      </span>
+                    </div>
+                  );
+                })}
+                {transactions.length === 0 ? (
+                  <div className={styles.transactions.emptyState}>
+                    <div className={styles.transactions.emptyIconContainer}>
+                      <Clock className={styles.transactions.emptyIcon} />
+                    </div>
+                    <p className={styles.transactions.emptyText}>
+                      No recent transactions
+                    </p>
+                  </div>
+                ) : (
+                  <div className={styles.transactions.viewAllContainer}>
+                    <button
+                      onClick={() => {
+                        setShowAllTransactions(!setShowAllTransactions);
+                      }}
+                      className={styles.transactions.viewAllButton}
+                    >
+                      {showAllTransactions ? (
+                        <>
+                        <ChevronUp className="w-5 h-5 "/>
+                        Show less
+                        </>
+                      ) : (
+                      <>
+                      < ChevronDown className="w-5 h-5 "/> 
+                      View All Transactions({transactions.length})
+                      </>)}
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+         </div>
+          
+      </div>
     </div>
   );
 };
