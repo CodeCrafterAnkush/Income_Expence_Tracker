@@ -5,13 +5,16 @@ import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
 import {
   Activity,
+  ArrowDown,
   ArrowUp,
   Car,
   CreditCard,
+  DollarSign,
   Gift,
   Home,
   PiggyBank,
   ShoppingCart,
+  TrendingUp,
   Utensils,
   Zap,
 } from "lucide-react";
@@ -306,8 +309,8 @@ const Layout = ({ onLogout, user }) => {
             <p className={styles.header.subtitle}>Welcome back</p>
           </div>
         </div>
-      </div>
-      <div className={styles.statCards.grid}>
+
+<div className={styles.statCards.grid}>
         <div className={styles.statCards.card}>
           <div className={styles.statCards.cardHeader}>
             <div>
@@ -319,9 +322,113 @@ const Layout = ({ onLogout, user }) => {
                 })}
               </p>
             </div>
+            <div className={styles.statCards.iconContainer("teal")}>
+            <DollarSign className={styles.statCards.icon("teal")} />
+            </div>
           </div>
+          <p classNAme={styles.statCards.cardFooter}>
+            <span className="text-teal-600 font-medium">
+              +${stats.last30DaysSavings.toLocaleString()}
+            </span>{" "}
+            this month
+
+          </p>
         </div>
+        
+        {/* {this id for the incom} */}
+        <div className={styles.statCards.card}>
+          <div className={styles.statCards.cardHeader}>
+            <div>
+              <p className={styles.statCards.cardTitle}>Monthly Income</p>
+              <p className={styles.statCards.cardValue}>
+                $
+                {stats.last30DaysIncome.toLocaleString("en-US", {
+                  minimumFractionDigits: 2,
+                })}
+              </p>
+            </div>
+            <div className={styles.statCards.iconContainer("green")}>
+            <ArrowUp className={styles.statCards.icon("green")} />
+            </div>
+          </div>
+          <p classNAme={styles.statCards.cardFooter}>
+            <span className="text-green-600 font-medium">
+              +12.5%
+            </span>{" "}
+            from last month
+
+          </p>
+        </div>
+
+        {/* this is for expence */}
+        <div className={styles.statCards.card}>
+          <div className={styles.statCards.cardHeader}>
+            <div>
+              <p className={styles.statCards.cardTitle}>Monthly Expence</p>
+              <p className={styles.statCards.cardValue}>
+                $
+                {stats.last30DaysExpenses.toLocaleString("en-US", {
+                  minimumFractionDigits: 2,
+                })}
+              </p>
+            </div>
+            <div className={styles.statCards.iconContainer("orange")}>
+            <ArrowDown className={styles.statCards.icon("orange")} />
+            </div>
+          </div>
+          <p classNAme={styles.statCards.cardFooter}>
+            <span className={`${styles.colors.expenseChange(
+              stats.expenseChange,
+            )} font-medium`}>
+              {stats.expenseChange > 0?"+":""}{stats.expenseChange}%
+            </span>{" "}
+            from last month
+          </p>
+        </div>
+
+        <div className={styles.statCards.card}>
+          <div className={styles.statCards.cardHeader}>
+            <div>
+              <p className={styles.statCards.cardTitle}>Saving Rate</p>
+              <p className={styles.statCards.cardValue}>
+                {stats.savingsRate}%
+              </p>
+            </div>
+            <div className={styles.statCards.iconContainer("blue")}>
+            <PiggyBank className={styles.statCards.icon("blue")} />
+            </div>
+          </div>
+          <p classNAme={styles.statCards.cardFooter}>
+            {getSavingsRating(stats.savingsRate)}
+          </p>
+        </div>
+
+        <div className={styles.grid.main}>
+          <div className={styles.grid.leftColumn}>
+            <div className={styles.cards.base}>
+              <div className={styles.cards.header}>
+                <h3 className={styles.cards.title}>
+                  <TrendingUp className="w-6 h-6 text-teal-500" />
+                  Financial Overview
+
+                  <span className="text-sm text-gray-500font-normal">
+                    {{timeFrameLabel}}
+                  </span>
+                </h3>
+              </div>
+              <Outlet context={outletContext} />
+            </div>
+          </div>
+
+
+        </div>
+        
+        {/*right side */}
       </div>
+        
+      </div>
+
+      
     </div>
   );
 };
