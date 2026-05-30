@@ -16,6 +16,7 @@ import {
   Gift,
   Home,
   Info,
+  PieChart,
   PiggyBank,
   RefreshCcw,
   RefreshCw,
@@ -407,133 +408,26 @@ const Layout = ({ onLogout, user }) => {
               {getSavingsRating(stats.savingsRate)}
             </p>
           </div>
-          <div className={styles.grid.main}>
-            <div className={styles.grid.leftColumn}>
-              <div className={styles.cards.base}>
-                <div className={styles.cards.header}>
-                  <h3 className={styles.cards.title}>
-                    <TrendingUp className="w-6 h-6 text-teal-500" />
-                    Financial Overview
-                    <span className="text-sm text-gray-500font-normal">
-                      ({timeFrameLabel})
-                    </span>
-                  </h3>
-                </div>
-                <Outlet context={outletContext} />
-              </div>
-            </div>
-          </div>
-
-          {/*right side */}
-          <div className={styles.grid.rightColumn}>
-            <div className={styles.cards.base}>
-              <div className={styles.transactions.cardHeader}>
-                <h3 className={styles.transactions.cardTitle}>
-                  <Clock className="w-6 h-6 text-purple-500" />
-                  Recent Transaction
-                </h3>
-                <button
-                  onClick={fetchTransactions}
-                  disabled={loading}
-                  className={styles.transactions.refreshButton}
-                >
-                  <RefreshCw
-                    className={styles.transactions.refreshIcon(loading)}
-                  />
-                </button>
-              </div>
-              <div className={styles.transactions.dataStackingInfo}>
-                <Info className={styles.transactions.dataStackingIcon} />
-                <span> Transactions are stack by dates (newest first)</span>
-              </div>
-              <div className={styles.transactions.listContainer}>
-                {displayedTransactions.map((transaction) => {
-                  const { id, type, category, description, date, amount } =
-                    transactions;
-                  return (
-                    <div
-                      key={id}
-                      className={styles.transactions.transactionItem}
-                    >
-                      <div className="flex items-center gap-1 md:gap-4 lg:gap-3">
-                        <div
-                          className={`p-2 rounded-lg ${styles.colors.transaction.bg(type)}`}
-                        >
-                          {CATEGORY_ICONS || (
-                            <DollarSign className={styles.transactions.icon} />
-                          )}
-                        </div>
-                        <div className={styles.transactions.details}>
-                          <p className={styles.transactions.description}>
-                            {description}
-                          </p>
-                          <p className={styles.transactions.meta}>
-                            {new Date(date).toLocaleDateString()}
-                            <span className="ml-2 capitalize">{category}</span>
-                          </p>
-                        </div>
-                      </div>
-                      <span className={styles.colors.transaction.text(type)}>
-                        {type === "income" ? "+" : "-"}${Number(amount)}
-                      </span>
-                    </div>
-                  );
-                })}
-                {transactions.length === 0 ? (
-                  <div className={styles.transactions.emptyState}>
-                    <div className={styles.transactions.emptyIconContainer}>
-                      <Clock className={styles.transactions.emptyIcon} />
-                    </div>
-                    <p className={styles.transactions.emptyText}>
-                      No recent transactions
-                    </p>
-                  </div>
-                ) : (
-                  <div className={styles.transactions.viewAllContainer}>
-                    <button
-                      onClick={() => {
-                        setShowAllTransactions(!setShowAllTransactions);
-                      }}
-                      className={styles.transactions.viewAllButton}
-                    >
-                      {showAllTransactions ? (
-                        <>
-                        <ChevronUp className="w-5 h-5 "/>
-                        Show less
-                        </>
-                      ) : (
-                      <>
-                      < ChevronDown className="w-5 h-5 "/> 
-                      View All Transactions({transactions.length})
-                      </>)}
-                    </button>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
         </div>
-         
-         {/* under div */}
-         <div>
-          <div className={styles.grid.main}>
-            <div className={styles.grid.leftColumn}>
-              <div className={styles.cards.base}>
-                <div className={styles.cards.header}>
-                  <h3 className={styles.cards.title}>
-                    <TrendingUp className="w-6 h-6 text-teal-500" />
-                    Financial Overview
-                    <span className="text-sm text-gray-500font-normal">
-                      ({timeFrameLabel})
-                    </span>
-                  </h3>
-                </div>
-                <Outlet context={outletContext} />
+
+        <div className={styles.grid.main}>
+          <div className={styles.grid.leftColumn}>
+            <div className={styles.cards.base}>
+              <div className={styles.cards.header}>
+                <h3 className={styles.cards.title}>
+                  <TrendingUp className="w-6 h-6 text-teal-500" />
+                  Financial Overview
+                  <span className="text-sm text-gray-500font-normal">
+                    ({timeFrameLabel})
+                  </span>
+                </h3>
               </div>
+              <Outlet context={outletContext} />
             </div>
           </div>
 
           {/*right side */}
+
           <div className={styles.grid.rightColumn}>
             <div className={styles.cards.base}>
               <div className={styles.transactions.cardHeader}>
@@ -607,22 +501,79 @@ const Layout = ({ onLogout, user }) => {
                     >
                       {showAllTransactions ? (
                         <>
-                        <ChevronUp className="w-5 h-5 "/>
-                        Show less
+                          <ChevronUp className="w-5 h-5 " />
+                          Show less
                         </>
                       ) : (
-                      <>
-                      < ChevronDown className="w-5 h-5 "/> 
-                      View All Transactions({transactions.length})
-                      </>)}
+                        <>
+                          <ChevronDown className="w-5 h-5 " />
+                          View All Transactions({transactions.length})
+                        </>
+                      )}
                     </button>
                   </div>
                 )}
               </div>
             </div>
+
+            {/* spending by category */}
+            <div className={styles.cards.base}>
+                <h3 className={styles.categories.title}>
+                  <PieChart className={styles.categories.titleIcon} />
+                  Spending by category
+                </h3>
+                <div className={styles.categories.list}>
+                  {topCategories.map(([category,amount])=>{
+                    <div key={category} classNAme={styles.categories.categoryItem}>
+                      <div className="flex items-center gap-3 ">
+
+                      <div className={styles.categories.categoryIconContainer}>
+                        {CATEGORY_ICONS[category]||(
+                          <DollarSign className={styles.categories.categoryIcon} />
+                        )}
+                      </div>
+                      <span className={styles.categories.categoryName}>
+                        {category}
+                      </span>
+                        </div>
+                        <span className={styles.categories.categoryAmount}>
+                          ${amount}
+                        </span>
+                    </div>
+                  })}
+                </div>
+
+                <div className={styles.categories.summaryContainer}>
+                  <div className={styles.categories.summaryGrid}>
+
+                    <div className={styles.categories.summaryIncomeCard}>
+                      <p className={styles.categories.summaryTitle}>
+                        Total Income
+                      </p>
+                      <p className={styles.categories.summaryValue}>
+                        ${stats.allTimeIncome.toLocaleString()}
+                      </p>
+                    </div>
+
+                    <div className={styles.categories.summaryExpenseCard}>
+                      <p className={styles.categories.summaryTitle}>
+                        Total Expenses
+                      </p>
+                      <p className={styles.categories.summaryValue}>
+                        ${stats.allTimeExpenses.toLocaleString()}
+                      </p>
+                    </div>
+
+
+
+                  </div>
+                </div>
+                
+            </div>
+            
           </div>
-         </div>
-          
+
+        </div>
       </div>
     </div>
   );
