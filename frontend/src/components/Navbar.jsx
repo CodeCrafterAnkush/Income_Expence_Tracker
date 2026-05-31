@@ -26,6 +26,7 @@ const Navbar = ({ user: propUser, onLogout}) => {
     const fetchUserData = async () => {
       try {
         const token = localStorage.getItem("token");
+        console.log(token);
 
         if (!token) return;
 

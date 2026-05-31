@@ -179,7 +179,7 @@ const Sidebar = ({ user, isCollapsed, setIsCollapsed }) => {
           </div>
 
           <div className="flex-1 overflow-y-auto py-4 custom-scrollbar">
-            <ul claasName={sidebarStyles.menuList.base}>
+            <ul className={sidebarStyles.menuList.base}>
               {MENU_ITEMS.map(renderMenuItem)}
             </ul>
           </div>

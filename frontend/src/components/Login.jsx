@@ -16,17 +16,29 @@ const Login = ({ onLogin, API_URL = "http://localhost:4000/api" }) => {
 
   // to fetch the profile
 
+  // const fetchProfile = async (token) => {
+  //   if (!token) return null;
+
+  //   const res = axios.get(`${API_URL}/user/me`, {
+  //     headers: {
+  //       Authorization: `Bearer ${token}`,
+  //     },
+  //   });
+  //   return res.data;
+  // };
+
   const fetchProfile = async (token) => {
-    if (!token) return null;
+  if (!token) return null;
 
-    const res = axios.get(`${API_URL}/user/me`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return res.data;
-  };
+  const res = await axios.get(`${API_URL}/user/me`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 
+  return res.data;
+};
+  
   const parsistAuth = async (profile, token) => {
     const storage = rememberMe ? localStorage : sessionStorage;
     try {

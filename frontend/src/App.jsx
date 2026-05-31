@@ -3,6 +3,7 @@ import { Routes ,Route, useNavigate} from "react-router-dom";
 import Layout from "./components/Layout";
 import Dashboard from "./pages/Dashboard";
 import Login from "./components/Login";
+import SignUp from "./components/SignUp";
 
 const App = () => {
   const [user, setUser] = React.useState(null);
@@ -10,7 +11,7 @@ const App = () => {
   const navigate = useNavigate();
 
   // to save the token
-  const persistAuth = (userObj, tokenStr, remember = false) => {
+  const parsistAuth = (userObj, tokenStr, remember = false) => {
     try {
       if (remember) {
         if (userObj) localStorage.setItem("user", JSON.stringify(userObj));
@@ -48,16 +49,32 @@ const App = () => {
     navigate("/login");
   }
 
-  const handleLogin = (userData, remember= false, tokenFromApi =null) => {
-    parsistAuth(userData, remember, tokenFromApi);
-    navigate("/");
-  };
+  // const handleLogin = (userData, remember= false, tokenFromApi =null) => {
+  //   parsistAuth(userData, remember, tokenFromApi);
+  //   navigate("/");
+  // };
+
+  // const handleSignup = (userData, remember= false, tokenFromApi =null) => {
+  //   parsistAuth(userData, remember, tokenFromApi);
+  //   navigate("/");
+  // };
+
+  const handleLogin = (userData, remember = false, tokenFromApi = null) => {
+  parsistAuth(userData, tokenFromApi, remember);
+  navigate("/");
+};
+
+const handleSignup = (userData, remember = false, tokenFromApi = null) => {
+  parsistAuth(userData, tokenFromApi, remember);
+  navigate("/");
+};
   
   return (
     <>
     <Routes>
 
       <Route path="/login" element={<Login  onLogin={handleLogin}/>} />
+      <Route path="/signup" element={<SignUp onSignup={handleSignup}/>} />
       
       <Route path="/" element={<Layout user={user}
       onLogout={handelLogout}/>}>
